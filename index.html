@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MockTest: Thực hành các bài kiểm tra trực tuyến với bài mô phỏng, lợi ích và hướng dẫn sử dụng dễ dàng.">
+    <title>MockTest - Nền Tảng Bài Kiểm Tra Mô Phỏng Trực Tuyến</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header__container">
+            <h1 class="header__logo">MockTest</h1>
+            <nav class="header__nav">
+                <ul class="header__nav-list">
+                    <li class="header__nav-item"><a href="#" class="header__nav-link">Trang Chủ</a></li>
+                    <li class="header__nav-item"><a href="#benefits" class="header__nav-link">Tính Năng</a></li>
+                    <li class="header__nav-item"><a href="#how-to-use" class="header__nav-link">Cách Sử Dụng</a></li>
+                    <li class="header__nav-item"><a href="#contact" class="header__nav-link">Liên Hệ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="hero" id="hero">
+            <div class="hero__container">
+                <h2 class="hero__title">Nắm Vững Kỳ Thi Với MockTest</h2>
+                <p class="hero__description">MockTest là nền tảng trực tuyến cung cấp các bài kiểm tra mô phỏng để giúp bạn chuẩn bị cho kỳ thi thật. Trải nghiệm câu hỏi có thời gian, định dạng trắc nghiệm và phản hồi ngay lập tức như thật.</p>
+                <button class="button button--cta" onclick="scrollToSection('benefits')">Bắt Đầu</button>
+                <img class="hero__image" src="https://cdn.dribbble.com/userupload/42229373/file/original-ed7a0d4882c972b919978cfc8f3ac778.png?format=webp&resize=400x300&vertical=center" alt="Ảnh chụp màn hình giao diện bài kiểm tra MockTest hiển thị một câu hỏi mẫu và bộ đếm thời gian">
+            </div>
+        </section>
+
+        <section class="benefits" id="benefits">
+            <div class="benefits__container">
+                <h2 class="benefits__title">Lợi Ích Khi Sử Dụng MockTest</h2>
+                <ul class="benefits__list">
+                    <li class="benefits__item">Cải thiện khả năng ghi nhớ thông qua thực hành lặp lại.</li>
+                    <li class="benefits__item">Tăng sự tự tin bằng cách mô phỏng môi trường thi thật.</li>
+                    <li class="benefits__item">Cung cấp theo dõi tiến độ chi tiết và phân tích.</li>
+                    <li class="benefits__item">Truy cập mọi lúc, mọi nơi trên mọi thiết bị.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="how-to-use" id="how-to-use">
+            <div class="how-to-use__container">
+                <h2 class="how-to-use__title">Cách Sử Dụng MockTest</h2>
+                <ol class="how-to-use__list">
+                    <li class="how-to-use__item">Đăng ký một tài khoản miễn phí trên nền tảng của chúng tôi.</li>
+                    <li class="how-to-use__item">Chọn môn học hoặc loại kỳ thi từ bảng điều khiển.</li>
+                    <li class="how-to-use__item">Bắt đầu bài kiểm tra mô phỏng – trả lời câu hỏi trong thời gian quy định.</li>
+                    <li class="how-to-use__item">Xem lại kết quả, xem lời giải thích và theo dõi sự tiến bộ.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="contact" id="contact">
+            <div class="contact__container">
+                <h2 class="contact__title">Liên Hệ Với Chúng Tôi</h2>
+                <p class="contact__description">Có câu hỏi hoặc cần hỗ trợ? Hãy liên hệ với chúng tôi!</p>
+                <div class="contact__info">
+                    <div class="contact__item">
+                        <h3>Email</h3>
+                        <p>support@mocktest.com</p>
+                    </div>
+                    <div class="contact__item">
+                        <h3>Điện thoại</h3>
+                        <p>+84 123 456 789</p>
+                    </div>
+                    <div class="contact__item">
+                        <h3>Giờ làm việc</h3>
+                        <p>Thứ 2 - Thứ 6: 8:00 - 17:00</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer__container">
+            <p class="footer__text">&copy; 2025 MockTest. Mọi quyền được bảo lưu.</p>
+            <ul class="footer__links">
+                <li class="footer__link-item"><a href="#" class="footer__link">Chính Sách Bảo Mật</a></li>
+                <li class="footer__link-item"><a href="#" class="footer__link">Điều Khoản Dịch Vụ</a></li>
+                <li class="footer__link-item"><a href="#contact" class="footer__link">Liên Hệ Chúng Tôi</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        // Simple scroll to section
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
