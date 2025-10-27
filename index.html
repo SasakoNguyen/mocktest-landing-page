@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="MockTest: Thực hành các bài kiểm tra trực tuyến với bài mô phỏng, lợi ích và hướng dẫn sử dụng dễ dàng.">
     <title>MockTest - Nền Tảng Bài Kiểm Tra Mô Phỏng Trực Tuyến</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
     <header class="header">
@@ -17,7 +17,10 @@
                     <li class="header__nav-item"><a href="#benefits" class="header__nav-link">Tính Năng</a></li>
                     <li class="header__nav-item"><a href="#how-to-use" class="header__nav-link">Cách Sử Dụng</a></li>
                     <li class="header__nav-item"><a href="#contact" class="header__nav-link">Liên Hệ</a></li>
-                    <li class="header__nav-item"><a href="#" class="header__nav-link header__nav-link--login" onclick="openLoginModal()">Đăng Nhập</a></li>
+                    <li class="header__nav-item">
+                        <a href="javascript:void(0)" class="header__nav-link header__nav-link--login" onclick="openAuthModal('login'); return false;">Đăng Nhập</a>
+                        <a href="javascript:void(0)" class="header__nav-link header__nav-link--signup" onclick="openAuthModal('signup'); return false;">Đăng Ký</a>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -89,22 +92,58 @@
         </div>
     </footer>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
+    <!-- Auth Modal (Login/Signup) -->
+    <div id="authModal" class="modal">
         <div class="modal__content">
-            <span class="modal__close" onclick="closeLoginModal()">&times;</span>
-            <h2 class="modal__title">Đăng Nhập</h2>
-            <form id="loginForm" class="modal__form" onsubmit="handleLogin(event)">
-                <div class="modal__form-group">
-                    <label for="username" class="modal__label">Tên đăng nhập:</label>
-                    <input type="text" id="username" name="username" class="modal__input" required>
-                </div>
-                <div class="modal__form-group">
-                    <label for="password" class="modal__label">Mật khẩu:</label>
-                    <input type="password" id="password" name="password" class="modal__input" required>
-                </div>
-                <button type="submit" class="modal__button">Đăng Nhập</button>
-            </form>
+            <span class="modal__close" onclick="closeAuthModal()">&times;</span>
+            
+            <!-- Tabs -->
+            <div class="modal__tabs">
+                <button class="modal__tab modal__tab--active" id="loginTab" onclick="switchTab('login')">Đăng Nhập</button>
+                <button class="modal__tab" id="signupTab" onclick="switchTab('signup')">Đăng Ký</button>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="loginSection" class="modal__section">
+                <h2 class="modal__title">Đăng Nhập</h2>
+                <form id="loginForm" class="modal__form" onsubmit="handleLogin(event)">
+                    <div class="modal__form-group">
+                        <label for="loginUsername" class="modal__label">Tên đăng nhập:</label>
+                        <input type="text" id="loginUsername" name="username" class="modal__input" required>
+                    </div>
+                    <div class="modal__form-group">
+                        <label for="loginPassword" class="modal__label">Mật khẩu:</label>
+                        <input type="password" id="loginPassword" name="password" class="modal__input" required>
+                    </div>
+                    <div id="loginError" class="modal__error"></div>
+                    <button type="submit" class="modal__button">Đăng Nhập</button>
+                </form>
+            </div>
+            
+            <!-- Signup Form -->
+            <div id="signupSection" class="modal__section" style="display: none;">
+                <h2 class="modal__title">Đăng Ký</h2>
+                <form id="signupForm" class="modal__form" onsubmit="handleSignup(event)">
+                    <div class="modal__form-group">
+                        <label for="signupUsername" class="modal__label">Tên đăng nhập:</label>
+                        <input type="text" id="signupUsername" name="username" class="modal__input" required minlength="3">
+                    </div>
+                    <div class="modal__form-group">
+                        <label for="signupEmail" class="modal__label">Email:</label>
+                        <input type="email" id="signupEmail" name="email" class="modal__input" required>
+                    </div>
+                    <div class="modal__form-group">
+                        <label for="signupPassword" class="modal__label">Mật khẩu:</label>
+                        <input type="password" id="signupPassword" name="password" class="modal__input" required minlength="6">
+                    </div>
+                    <div class="modal__form-group">
+                        <label for="confirmPassword" class="modal__label">Xác nhận mật khẩu:</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="modal__input" required>
+                    </div>
+                    <div id="signupError" class="modal__error"></div>
+                    <button type="submit" class="modal__button">Đăng Ký</button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -117,30 +156,137 @@
             }
         }
 
-        // Login Modal Functions
-        function openLoginModal() {
-            document.getElementById('loginModal').style.display = 'block';
+        // Auth Modal Functions
+        function openAuthModal(type) {
+            console.log('Opening modal with type:', type); // Debug
+            const modal = document.getElementById('authModal');
+            if (!modal) {
+                console.error('Modal not found!');
+                return;
+            }
+            modal.style.display = 'block';
+            switchTab(type);
         }
 
-        function closeLoginModal() {
-            document.getElementById('loginModal').style.display = 'none';
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
             document.getElementById('loginForm').reset();
+            document.getElementById('signupForm').reset();
+            clearErrors();
         }
 
+        function switchTab(type) {
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
+            const loginSection = document.getElementById('loginSection');
+            const signupSection = document.getElementById('signupSection');
+            
+            clearErrors();
+            
+            if (type === 'login') {
+                loginTab.classList.add('modal__tab--active');
+                signupTab.classList.remove('modal__tab--active');
+                loginSection.style.display = 'block';
+                signupSection.style.display = 'none';
+            } else {
+                signupTab.classList.add('modal__tab--active');
+                loginTab.classList.remove('modal__tab--active');
+                signupSection.style.display = 'block';
+                loginSection.style.display = 'none';
+            }
+        }
+
+        function clearErrors() {
+            document.getElementById('loginError').textContent = '';
+            document.getElementById('signupError').textContent = '';
+        }
+
+        // Handle Login
         function handleLogin(event) {
             event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
             
-            // Redirect to dashboard page with username
-            window.location.href = `dashboard.html?username=${encodeURIComponent(username)}`;
+            // Check if user exists
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            
+            if (users[username] && users[username].password === password) {
+                // Set logged in user
+                sessionStorage.setItem('currentUser', JSON.stringify({
+                    username: username,
+                    email: users[username].email
+                }));
+                
+                // Redirect to dashboard
+                window.location.href = `pages/dashboard.html?username=${encodeURIComponent(username)}`;
+            } else {
+                errorDiv.textContent = 'Tên đăng nhập hoặc mật khẩu không đúng!';
+                errorDiv.style.color = '#f44336';
+            }
+        }
+
+        // Handle Signup
+        function handleSignup(event) {
+            event.preventDefault();
+            const username = document.getElementById('signupUsername').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorDiv = document.getElementById('signupError');
+            
+            // Validation
+            if (password !== confirmPassword) {
+                errorDiv.textContent = 'Mật khẩu xác nhận không khớp!';
+                errorDiv.style.color = '#f44336';
+                return;
+            }
+            
+            if (password.length < 6) {
+                errorDiv.textContent = 'Mật khẩu phải có ít nhất 6 ký tự!';
+                errorDiv.style.color = '#f44336';
+                return;
+            }
+            
+            // Check if username exists
+            const users = JSON.parse(localStorage.getItem('users') || '{}');
+            
+            if (users[username]) {
+                errorDiv.textContent = 'Tên đăng nhập đã tồn tại!';
+                errorDiv.style.color = '#f44336';
+                return;
+            }
+            
+            // Save user
+            users[username] = {
+                username: username,
+                email: email,
+                password: password,
+                registeredAt: new Date().toISOString()
+            };
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Set logged in user
+            sessionStorage.setItem('currentUser', JSON.stringify({
+                username: username,
+                email: email
+            }));
+            
+            // Success message
+            errorDiv.textContent = 'Đăng ký thành công! Đang chuyển hướng...';
+            errorDiv.style.color = '#4CAF50';
+            
+            // Redirect to dashboard after 1 second
+            setTimeout(() => {
+                window.location.href = `pages/dashboard.html?username=${encodeURIComponent(username)}`;
+            }, 1000);
         }
 
         // Close modal when clicking outside
         window.onclick = function(event) {
-            const modal = document.getElementById('loginModal');
+            const modal = document.getElementById('authModal');
             if (event.target == modal) {
-                closeLoginModal();
+                closeAuthModal();
             }
         }
     </script>

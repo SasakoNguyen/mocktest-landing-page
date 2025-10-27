@@ -7,6 +7,8 @@
 let timeRemaining = 55 * 60; // 55 minutes in seconds
 let timerInterval;
 let isPaused = false;
+let testStarted = false; // Flag to track if test has started
+let testInitialized = false; // Track if test interface has been shown
 
 // State management
 let currentQuestionIndex = 0;
@@ -16,111 +18,173 @@ let currentSection = 'reading'; // reading, listening, writing
 // All 45 questions organized by section
 const questions = {
     reading: [
-        // Reading Questions 1-15
-        {id: 1, question: "Read the passage and answer: The Internet has revolutionized communication.", choices: [
-            {letter: "A", text: "Changed completely"},
-            {letter: "B", text: "Made worse"},
-            {letter: "C", text: "Stopped"},
-            {letter: "D", text: "Created"}
-        ], passage: "The Internet has revolutionized communication. It allows people to connect instantly across vast distances."},
+        {
+            id: 1, 
+            question: "Read the passage and answer: What is the main purpose of the passage?", 
+            choices: [
+                {letter: "A", text: "To describe the invention of the telephone"},
+                {letter: "B", text: "To explain the importance of digital communication"},
+                {letter: "C", text: "To compare different types of communication"},
+                {letter: "D", text: "To criticize modern communication methods"}
+            ], 
+            passage: "Digital communication has transformed how people interact worldwide. Email, instant messaging, and video calls allow people to connect instantly across continents, breaking down geographical barriers. This technological advancement has not only made communication faster but also more accessible to millions of people globally."
+        },
         
-        {id: 2, question: "What does 'vast' mean in the passage?", choices: [
-            {letter: "A", text: "Small"},
-            {letter: "B", text: "Large"},
-            {letter: "C", text: "Beautiful"},
-            {letter: "D", text: "Empty"}
-        ], passage: "The Internet has revolutionized communication. It allows people to connect instantly across vast distances."},
+        {
+            id: 2, 
+            question: "According to the passage, what has digital communication accomplished?", 
+            choices: [
+                {letter: "A", text: "Made communication more expensive"},
+                {letter: "B", text: "Eliminated face-to-face interaction"},
+                {letter: "C", text: "Made communication faster and more accessible"},
+                {letter: "D", text: "Created language barriers"}
+            ], 
+            passage: "Digital communication has transformed how people interact worldwide. Email, instant messaging, and video calls allow people to connect instantly across continents, breaking down geographical barriers. This technological advancement has not only made communication faster but also more accessible to millions of people globally."
+        },
         
-        {id: 3, question: "According to the text, the Internet:", choices: [
-            {letter: "A", text: "Is expensive"},
-            {letter: "B", text: "Allows instant communication"},
-            {letter: "C", text: "Is difficult to use"},
-            {letter: "D", text: "Has no benefits"}
-        ], passage: "The Internet has revolutionized communication. It allows people to connect instantly across vast distances."},
+        {
+            id: 3, 
+            question: "What does the word 'barriers' most likely mean in this context?", 
+            choices: [
+                {letter: "A", text: "Obstacles or limitations"},
+                {letter: "B", text: "Tools or equipment"},
+                {letter: "C", text: "Opportunities or advantages"},
+                {letter: "D", text: "Technologies or inventions"}
+            ], 
+            passage: "Digital communication has transformed how people interact worldwide. Email, instant messaging, and video calls allow people to connect instantly across continents, breaking down geographical barriers. This technological advancement has not only made communication faster but also more accessible to millions of people globally."
+        },
         
-        {id: 4, question: "Complete: He ____ to the store yesterday.", choices: [
-            {letter: "A", text: "go"},
-            {letter: "B", text: "goes"},
-            {letter: "C", text: "went"},
-            {letter: "D", text: "going"}
-        ]},
+        {
+            id: 4, 
+            question: "Complete the sentence: If it ____ tomorrow, we will cancel the picnic.", 
+            choices: [
+                {letter: "A", text: "rain"},
+                {letter: "B", text: "rains"},
+                {letter: "C", text: "will rain"},
+                {letter: "D", text: "rained"}
+            ]
+        },
         
-        {id: 5, question: "What is the synonym of 'happy'?", choices: [
-            {letter: "A", text: "Sad"},
-            {letter: "B", text: "Angry"},
-            {letter: "C", text: "Joyful"},
-            {letter: "D", text: "Tired"}
-        ]},
+        {
+            id: 5, 
+            question: "Choose the correct form: Neither the students nor the teacher ____ happy with the results.", 
+            choices: [
+                {letter: "A", text: "is"},
+                {letter: "B", text: "are"},
+                {letter: "C", text: "were"},
+                {letter: "D", text: "be"}
+            ]
+        },
         
-        {id: 6, question: "Choose the correct form: She ____ English every day.", choices: [
-            {letter: "A", text: "study"},
-            {letter: "B", text: "studies"},
-            {letter: "C", text: "studied"},
-            {letter: "D", text: "studying"}
-        ]},
+        {
+            id: 6, 
+            question: "Select the appropriate word: The concert was ____ crowded that we couldn't find seats.", 
+            choices: [
+                {letter: "A", text: "so"},
+                {letter: "B", text: "such"},
+                {letter: "C", text: "very"},
+                {letter: "D", text: "too"}
+            ]
+        },
         
-        {id: 7, question: "What does 'morning' mean?", choices: [
-            {letter: "A", text: "Evening"},
-            {letter: "B", text: "Afternoon"},
-            {letter: "C", text: "Early part of the day"},
-            {letter: "D", text: "Night"}
-        ]},
+        {
+            id: 7, 
+            question: "Identify the sentence with correct grammar:", 
+            choices: [
+                {letter: "A", text: "She is more taller than her sister."},
+                {letter: "B", text: "She is taller than her sister."},
+                {letter: "C", text: "She is tall than her sister."},
+                {letter: "D", text: "She is the taller than her sister."}
+            ]
+        },
         
-        {id: 8, question: "Complete: I ____ hungry.", choices: [
-            {letter: "A", text: "am"},
-            {letter: "B", text: "is"},
-            {letter: "C", text: "are"},
-            {letter: "D", text: "be"}
-        ]},
+        {
+            id: 8, 
+            question: "What is the meaning of the word 'ubiquitous' in this sentence: Smartphones are ubiquitous in modern society?", 
+            choices: [
+                {letter: "A", text: "Expensive"},
+                {letter: "B", text: "Present everywhere"},
+                {letter: "C", text: "Difficult to use"},
+                {letter: "D", text: "Rarely found"}
+            ]
+        },
         
-        {id: 9, question: "What is the plural of 'child'?", choices: [
-            {letter: "A", text: "childs"},
-            {letter: "B", text: "children"},
-            {letter: "C", text: "childes"},
-            {letter: "D", text: "childen"}
-        ]},
+        {
+            id: 9, 
+            question: "Complete the sentence: I haven't seen him ____ Monday.", 
+            choices: [
+                {letter: "A", text: "since"},
+                {letter: "B", text: "for"},
+                {letter: "C", text: "from"},
+                {letter: "D", text: "during"}
+            ]
+        },
         
-        {id: 10, question: "Which is correct?", choices: [
-            {letter: "A", text: "I go to school"},
-            {letter: "B", text: "I am go to school"},
-            {letter: "C", text: "I go school"},
-            {letter: "D", text: "I going school"}
-        ]},
+        {
+            id: 10, 
+            question: "Choose the correct form: By the time we ____, the party had already started.", 
+            choices: [
+                {letter: "A", text: "arrive"},
+                {letter: "B", text: "arrived"},
+                {letter: "C", text: "arrives"},
+                {letter: "D", text: "had arrived"}
+            ]
+        },
         
-        {id: 11, question: "Read: 'The cat is on the table.' Where is the cat?", choices: [
-            {letter: "A", text: "Under the table"},
-            {letter: "B", text: "On the table"},
-            {letter: "C", text: "Next to the table"},
-            {letter: "D", text: "Behind the table"}
-        ]},
+        {
+            id: 11, 
+            question: "Select the sentence with correct punctuation:", 
+            choices: [
+                {letter: "A", text: "She said, \"I will be there tomorrow.\""},
+                {letter: "B", text: "She said \"I will be there tomorrow.\""},
+                {letter: "C", text: "She said, I will be there tomorrow."},
+                {letter: "D", text: "She said \"I will be there tomorrow.\""}
+            ]
+        },
         
-        {id: 12, question: "Choose the article: I have ___ apple.", choices: [
-            {letter: "A", text: "a"},
-            {letter: "B", text: "an"},
-            {letter: "C", text: "the"},
-            {letter: "D", text: "none"}
-        ]},
+        {
+            id: 12, 
+            question: "What is the synonym of 'melancholy'?", 
+            choices: [
+                {letter: "A", text: "Happy"},
+                {letter: "B", text: "Sad"},
+                {letter: "C", text: "Angry"},
+                {letter: "D", text: "Excited"}
+            ]
+        },
         
-        {id: 13, question: "What time is it when we say 'noon'?", choices: [
-            {letter: "A", text: "12:00 AM"},
-            {letter: "B", text: "12:00 PM"},
-            {letter: "C", text: "6:00 AM"},
-            {letter: "D", text: "6:00 PM"}
-        ]},
+        {
+            id: 13, 
+            question: "Complete: He would have passed the exam ____ studied harder.", 
+            choices: [
+                {letter: "A", text: "if"},
+                {letter: "B", text: "unless"},
+                {letter: "C", text: "although"},
+                {letter: "D", text: "whether"}
+            ]
+        },
         
-        {id: 14, question: "Complete: They ____ playing soccer.", choices: [
-            {letter: "A", text: "am"},
-            {letter: "B", text: "is"},
-            {letter: "C", text: "are"},
-            {letter: "D", text: "be"}
-        ]},
+        {
+            id: 14, 
+            question: "Identify the correct usage:",
+            choices: [
+                {letter: "A", text: "The data is incorrect."},
+                {letter: "B", text: "The data are incorrect."},
+                {letter: "C", text: "The datas is incorrect."},
+                {letter: "D", text: "The datas are incorrect."}
+            ]
+        },
         
-        {id: 15, question: "What does 'library' mean?", choices: [
-            {letter: "A", text: "A place to borrow books"},
-            {letter: "B", text: "A restaurant"},
-            {letter: "C", text: "A school"},
-            {letter: "D", text: "A hospital"}
-        ]}
+        {
+            id: 15, 
+            question: "What does the phrase 'on the brink of' mean in this context: The company was on the brink of bankruptcy?", 
+            choices: [
+                {letter: "A", text: "Far from"},
+                {letter: "B", text: "Very close to"},
+                {letter: "C", text: "Recovering from"},
+                {letter: "D", text: "Preventing"}
+            ]
+        }
     ],
     
     listening: [
@@ -390,6 +454,11 @@ function getCurrentQuestion() {
 
 // Render question
 function renderQuestion() {
+    // Only render if test has started
+    if (!testStarted) {
+        return;
+    }
+    
     const question = getCurrentQuestion();
     const contentDiv = document.getElementById('testContent');
     
@@ -526,28 +595,90 @@ function submitTest() {
     const results = `Kết quả bài kiểm tra!\n\n` +
                     `Điểm: ${score}/100\n` +
                     `Số câu trả lời: ${Object.keys(selectedAnswers).length}/45\n` +
-                    `Thời gian còn lại: ${Math.floor(timeRemaining / 60))}:${String(timeRemaining % 60).padStart(2, '0')}\n\n` +
+                    `Thời gian còn lại: ${Math.floor(timeRemaining / 60)}:${String(timeRemaining % 60).padStart(2, '0')}\n\n` +
                     `Bạn đã hoàn thành bài kiểm tra Tiếng Anh!`;
     
     alert(results);
     
     // Navigate back to dashboard
     setTimeout(() => {
-        window.location.href = 'dashboard.html';
+        window.location.href = '../pages/dashboard.html';
     }, 2000);
 }
 
 // Navigation
 function goBack() {
     if (confirm('Bạn có chắc muốn rời khỏi bài kiểm tra? Tiến độ sẽ bị mất.')) {
-        window.location.href = 'dashboard.html';
+        window.location.href = '../pages/dashboard.html';
     }
 }
 
 function logout() {
     if (confirm('Bạn có chắc muốn đăng xuất?')) {
-        window.location.href = 'index.html';
+        window.location.href = '../index.html';
     }
+}
+
+// Show start screen
+function showStartScreen() {
+    const contentDiv = document.getElementById('testContent');
+    contentDiv.innerHTML = `
+        <div style="text-align: center; padding: 4rem 2rem;">
+            <div style="margin-bottom: 3rem;">
+                <h1 style="font-size: 2.5rem; color: #333; margin-bottom: 1rem;">📝 Bài Kiểm Tra Tiếng Anh</h1>
+                <p style="font-size: 1.2rem; color: #666; margin-bottom: 0.5rem;">Tổng số câu hỏi: <strong>45 câu</strong></p>
+                <p style="font-size: 1.2rem; color: #666; margin-bottom: 0.5rem;">Thời gian làm bài: <strong>55 phút</strong></p>
+                <p style="font-size: 1.2rem; color: #666;">Dạng: <strong>Reading • Listening • Writing</strong></p>
+            </div>
+            
+            <div style="background: #f9f9f9; padding: 2rem; border-radius: 15px; margin: 2rem auto; max-width: 600px;">
+                <h2 style="font-size: 1.5rem; color: #333; margin-bottom: 1.5rem;">📋 Hướng Dẫn</h2>
+                <ul style="text-align: left; color: #555; font-size: 1rem; line-height: 2;">
+                    <li>Đọc kỹ câu hỏi trước khi chọn đáp án</li>
+                    <li>Bạn có thể quay lại câu hỏi trước đó để sửa</li>
+                    <li>Thời gian sẽ bắt đầu khi bạn nhấn "Bắt Đầu"</li>
+                    <li>Nộp bài khi hoàn thành tất cả câu hỏi</li>
+                </ul>
+            </div>
+            
+            <button 
+                onclick="startTest()" 
+                style="
+                    padding: 1.5rem 4rem;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 50px;
+                    font-size: 1.3rem;
+                    font-weight: bold;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+                "
+                onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 6px 20px rgba(102, 126, 234, 0.4)'"
+                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(102, 126, 234, 0.3)'"
+            >
+                🚀 Bắt Đầu
+            </button>
+        </div>
+    `;
+}
+
+// Start test
+function startTest() {
+    testStarted = true;
+    testInitialized = true;
+    
+    // Hide timer section initially, then show when test starts
+    document.querySelector('.timer-section').style.display = 'block';
+    
+    // Start timer
+    startTimer();
+    
+    // Render first question
+    renderQuestion();
+    
+    console.log('Test started - timer running');
 }
 
 // Initialize
@@ -560,12 +691,12 @@ window.onload = function() {
         document.getElementById('displayUsername').textContent = username;
     }
     
-    // Start timer
-    startTimer();
+    // Hide timer initially
+    document.querySelector('.timer-section').style.display = 'none';
     
-    // Render first question
-    renderQuestion();
+    // Show start screen
+    showStartScreen();
     
-    console.log('English Test initialized - 45 questions loaded');
+    console.log('English Test page loaded - waiting for start');
 };
 

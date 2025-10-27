@@ -1,8 +1,8 @@
-# MockTest - React Components Documentation
+# MockTest - Components with useState Pattern
 
 ## 📋 Tổng quan
 
-Dự án MockTest bao gồm 3 React components chính được triển khai với pattern `useState` để quản lý state.
+Dự án MockTest bao gồm 3 components chính được triển khai với vanilla JavaScript và pattern `useState` để quản lý state giống React.
 
 ## 🎯 Components Đã Tạo
 
@@ -18,7 +18,7 @@ Component hiển thị thông tin câu hỏi hiện tại.
 **Features:**
 - Hiển thị số câu hỏi hiện tại
 - Hiển thị nội dung câu hỏi
-- Hiển thị điểm số và thời gian
+- Hiển thị type nếu có
 
 ### 2. **Choices** (`components/Choices.js`)
 
@@ -27,13 +27,14 @@ Component hiển thị danh sách các lựa chọn và cho phép người dùng
 **Props:**
 - `choices` (array): Mảng các lựa chọn
 - `selectedAnswer` (string): Đáp án đã chọn
-- `onAnswerSelect` (function): Callback khi người dùng chọn đáp án
+- `questionIndex` (number): Index của câu hỏi
 
 **Features:**
 - Radio button cho mỗi lựa chọn
 - Highlight đáp án đã chọn
 - Click để chọn đáp án
 - Hover effect
+- sử dụng onClick event handlers
 
 ### 3. **NavBar** (`components/NavBar.js`)
 
@@ -89,54 +90,71 @@ setSelectedAnswers({
 
 ```
 components/
-├── QuestionCard.js      # React component cho câu hỏi
+├── QuestionCard.js      # Vanilla JS component cho câu hỏi
 ├── QuestionCard.css     # CSS cho QuestionCard
-├── Choices.js          # React component cho lựa chọn
+├── Choices.js          # Vanilla JS component cho lựa chọn
 ├── Choices.css         # CSS cho Choices
-├── NavBar.js           # React component cho navigation
+├── NavBar.js           # Vanilla JS component cho navigation
 └── NavBar.css          # CSS cho NavBar
 
 mocktest.html           # Trang demo
-mocktest.js             # Logic với useState pattern
+mocktest.js             # Logic với useState pattern và demo
+test-tienganh.html     # Trang test Tiếng Anh (45 câu hỏi)
+test-tienganh.js       # Logic cho test Tiếng Anh
 ```
 
 ## 🚀 Cách Sử dụng
 
-### 1. Mở trang Test
+### 1. Mở trang Demo với useState Pattern
 ```bash
 # Mở mocktest.html trong trình duyệt
+# Hoặc chạy với live server:
+# npx live-server
 ```
 
-### 2. Sử dụng Components
+### 2. Sử dụng Components trong Code
 
 #### QuestionCard
 ```javascript
-<QuestionCard 
-  question={currentQuestion}
-  questionNumber={currentQuestionIndex + 1}
-  totalQuestions={totalQuestions}
-/>
+const questionCard = QuestionCard({
+  question: currentQuestion,
+  questionNumber: currentQuestionIndex + 1,
+  totalQuestions: totalQuestions
+});
+
+document.getElementById('app').innerHTML = questionCard;
 ```
 
 #### Choices
 ```javascript
-<Choices 
-  choices={currentQuestion.choices}
-  selectedAnswer={selectedAnswers[currentQuestionIndex]}
-  onAnswerSelect={selectAnswer}
-/>
+const choices = Choices({
+  choices: currentQuestion.choices,
+  selectedAnswer: selectedAnswers[currentQuestionIndex],
+  questionIndex: currentQuestionIndex
+});
 ```
 
 #### NavBar
 ```javascript
-<NavBar
-  currentQuestion={currentQuestionIndex + 1}
-  totalQuestions={totalQuestions}
-  onPrevQuestion={goToPreviousQuestion}
-  onNextQuestion={goToNextQuestion}
-  isLastQuestion={currentQuestionIndex === totalQuestions - 1}
-  onSubmit={handleSubmit}
-/>
+const navBar = NavBar({
+  currentQuestion: currentQuestionIndex + 1,
+  totalQuestions: totalQuestions,
+  onPrevQuestion: handlePrevQuestion,
+  onNextQuestion: handleNextQuestion,
+  isLastQuestion: currentQuestionIndex === totalQuestions - 1,
+  onSubmit: handleSubmit
+});
+```
+
+### 3. Demo với useState Pattern
+```javascript
+// Tạo state với useState
+const [getCurrentIndex, setCurrentIndex] = useState(0);
+const [getSelected, setSelected] = useState({});
+
+// Sử dụng state
+setCurrentIndex(1); // Update state
+const current = getCurrentIndex(); // Get state
 ```
 
 ## ✅ Requirements Checklist

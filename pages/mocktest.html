@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MockTest - Demo with useState Pattern</title>
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../components/QuestionCard.css">
+    <link rel="stylesheet" href="../components/Choices.css">
+    <link rel="stylesheet" href="../components/NavBar.css">
+    <style>
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+        }
+        
+        .state-debug {
+            background: #f5f5f5;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 MockTest Demo - Components with useState</h1>
+            <p>Sử dụng React-like useState pattern</p>
+        </div>
+        
+        <div class="state-debug" id="stateDebug">
+            <strong>State:</strong> Đang tải...
+        </div>
+        
+        <div id="app"></div>
+    </div>
+
+    <script src="../components/QuestionCard.js"></script>
+    <script src="../components/Choices.js"></script>
+    <script src="../components/NavBar.js"></script>
+    <script src="../scripts/mocktest.js"></script>
+</body>
+</html>
+

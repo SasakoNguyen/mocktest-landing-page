@@ -379,6 +379,58 @@ body {
     background-color: #0056b3;
 }
 
+/* Modal Tabs */
+.modal__tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #eee;
+}
+
+.modal__tab {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.modal__tab:hover {
+    color: #007bff;
+}
+
+.modal__tab--active {
+    color: #007bff;
+    border-bottom-color: #007bff;
+}
+
+.modal__section {
+    animation: fadeIn 0.3s ease;
+}
+
+.modal__error {
+    padding: 0.75rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    min-height: 1.2rem;
+}
+
+.header__nav-link--signup {
+    color: #007bff;
+    margin-left: 10px;
+}
+
+.header__nav-link--signup:hover {
+    color: #0056b3;
+}
+
 /* Login Link Styles */
 .header__nav-link--login {
     background-color: #ff6b6b;

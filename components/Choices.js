@@ -1,33 +1,44 @@
-import React from 'react';
-import './Choices.css';
+/**
+ * Choices Component
+ * Displays answer choices and allows selection
+ */
 
-const Choices = ({ choices, selectedAnswer, onAnswerSelect }) => {
-  return (
-    <div className="choices">
-      <h4 className="choices__title">Chọn đáp án:</h4>
-      <ul className="choices__list">
-        {choices.map((choice, index) => {
-          const choiceId = choice.letter || `choice-${index}`;
-          const isSelected = selectedAnswer === choiceId;
-          
-          return (
+/**
+ * Choices Component
+ * @param {Object} props - Component props
+ * @param {Array} props.choices - Array of choice objects
+ * @param {string} props.selectedAnswer - The currently selected answer letter
+ * @param {Function} props.onAnswerSelect - Callback function when an answer is selected
+ * @param {number} props.questionIndex - Index of the current question
+ * @returns {string} HTML string for the choices
+ */
+function Choices(props) {
+    const { choices, selectedAnswer, onAnswerSelect, questionIndex } = props;
+    
+    const choicesHTML = choices.map((choice, index) => {
+        const choiceId = choice.letter || `choice-${index}`;
+        const isSelected = selectedAnswer === choice.letter;
+        
+        return `
             <li 
-              key={choiceId} 
-              className={`choices__item ${isSelected ? 'choices__item--selected' : ''}`}
-              onClick={() => onAnswerSelect(choiceId)}
+                class="choices__item ${isSelected ? 'selected' : ''}" 
+                onclick="handleAnswerSelect('${choice.letter}')"
             >
-              <div className="choices__radio">
-                {isSelected && <span className="choices__radio-check">✓</span>}
-              </div>
-              <span className="choices__letter">{choice.letter}.</span>
-              <span className="choices__text">{choice.text}</span>
+                <div class="choices__radio">
+                    ${isSelected ? '<span class="choices__radio-check">✓</span>' : ''}
+                </div>
+                <span class="choices__letter">${choice.letter}.</span>
+                <span class="choices__text">${choice.text}</span>
             </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-};
-
-export default Choices;
-
+        `;
+    }).join('');
+    
+    return `
+        <div class="choices">
+            <h4 class="choices__title">Chọn đáp án:</h4>
+            <ul class="choices__list">
+                ${choicesHTML}
+            </ul>
+        </div>
+    `;
+}
