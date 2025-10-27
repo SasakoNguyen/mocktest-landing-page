@@ -134,8 +134,18 @@
         }
 
         function startTest(testName) {
-            alert(`Bắt đầu bài kiểm tra: ${testName}`);
-            // Here you would navigate to the actual test page
+            if (testName === 'tieng-anh') {
+                // Get username for the test
+                const urlParams = new URLSearchParams(window.location.search);
+                const username = urlParams.get('username');
+                if (username) {
+                    window.location.href = `test-tienganh.html?username=${encodeURIComponent(username)}`;
+                } else {
+                    window.location.href = 'test-tienganh.html';
+                }
+            } else {
+                alert(`Bài kiểm tra ${testName} đang được phát triển`);
+            }
         }
 
         function goHome() {

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MockTest - Bài Kiểm Tra</title>
+    <title>MockTest - Bài Kiểm Tra Tiếng Anh</title>
     <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="style.css">
     <style>
         .test-container {
             max-width: 1000px;
@@ -26,9 +27,48 @@
             margin-bottom: 0.5rem;
         }
 
+        .timer-section {
+            background: #fff3cd;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+            border: 2px solid #ffc107;
+        }
+
+        .timer {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #d9534f;
+        }
+
+        .timer-warning {
+            color: #f0ad4e;
+        }
+
+        .timer-danger {
+            color: #d9534f;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
         .test-content {
             max-width: 900px;
             margin: 0 auto;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin: 2rem 0 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
         }
 
         .question-card {
@@ -55,11 +95,41 @@
             font-size: 0.9rem;
         }
 
+        .question-card__type {
+            background: #e0e0e0;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
         .question-card__question {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #333;
             margin-bottom: 1rem;
             line-height: 1.6;
+        }
+
+        .question-card__passage {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            line-height: 1.8;
+            border-left: 4px solid #667eea;
+        }
+
+        .audio-player {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 2px dashed #2196F3;
+        }
+
+        .audio-player audio {
+            width: 100%;
+            margin-top: 0.5rem;
         }
 
         .choices {
@@ -154,6 +224,7 @@
             background: white;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
         }
 
         .navbar__button {
@@ -211,6 +282,22 @@
             padding: 0.5rem 1.5rem;
             border-radius: 20px;
         }
+
+        @media (max-width: 768px) {
+            .test-container {
+                padding: 1rem;
+            }
+            
+            .question-card {
+                padding: 1.5rem;
+            }
+            
+            .navbar {
+                padding: 1rem;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -222,68 +309,33 @@
             </div>
             <div class="dashboard-header__user">
                 <span class="dashboard-header__username" id="displayUsername">Người dùng</span>
-                <button class="dashboard-header__logout" onclick="logout()">Đăng xuất</button>
             </div>
         </div>
     </header>
 
     <main class="test-container">
         <div class="test-header">
-            <h1>📝 Bài Kiểm Tra Toán Học</h1>
-            <p>Chọn đáp án đúng cho các câu hỏi dưới đây</p>
+            <h1>📝 Bài Kiểm Tra Tiếng Anh</h1>
+            <p>45 câu hỏi - 55 phút</p>
+        </div>
+
+        <div class="timer-section">
+            <div style="margin-bottom: 0.5rem; font-weight: 600;">⏱️ Thời gian còn lại:</div>
+            <div class="timer" id="timer">55:00</div>
         </div>
 
         <div class="test-content" id="testContent">
-            <!-- Question Card -->
-            <div class="question-card" id="questionCard">
-                <div class="question-card__header">
-                    <span class="question-card__number" id="questionNumber">Câu 1/3</span>
-                </div>
-                <h3 class="question-card__question" id="questionText">
-                    Câu hỏi sẽ được hiển thị ở đây
-                </h3>
-            </div>
-
-            <!-- Choices -->
-            <div class="choices">
-                <h4 class="choices__title">Chọn đáp án:</h4>
-                <ul class="choices__list" id="choicesList">
-                    <!-- Choices will be populated by JavaScript -->
-                </ul>
-            </div>
-
-            <!-- NavBar -->
-            <nav class="navbar" id="navbar">
-                <button 
-                    class="navbar__button navbar__button--prev disabled" 
-                    id="prevBtn"
-                    onclick="goToPreviousQuestion()"
-                >
-                    ← Trước
-                </button>
-                
-                <div class="navbar__info">
-                    <span class="navbar__progress" id="progress">1/3</span>
-                </div>
-                
-                <button 
-                    class="navbar__button navbar__button--next" 
-                    id="nextBtn"
-                    onclick="goToNextQuestion()"
-                >
-                    Sau →
-                </button>
-            </nav>
+            <!-- Question will be loaded here -->
         </div>
     </main>
 
-    <footer class="dashboard-footer">
+    <footer class="dashboard-footer" style="margin-top: 4rem;">
         <div class="dashboard-footer__container">
             <p class="dashboard-footer__text">&copy; 2025 MockTest. Mọi quyền được bảo lưu.</p>
         </div>
     </footer>
 
-    <script src="mocktest.js"></script>
+    <script src="test-tienganh.js"></script>
 </body>
 </html>
 
