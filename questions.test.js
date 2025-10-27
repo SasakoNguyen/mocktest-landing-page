@@ -1,7 +1,10 @@
 /**
- * Unit Tests for Questions Page
+ * Unit Tests for Questions Page with Jest
  * Tests data fetching, rendering, and state handling
  */
+
+const fs = require('fs');
+const path = require('path');
 
 // Mock data for testing
 const mockQuestionsData = [
@@ -17,273 +20,212 @@ const mockQuestionsData = [
     }
 ];
 
-/**
- * Test 1: Render questions correctly
- * Tests that questions are rendered with proper HTML structure
- */
-function testRenderQuestions() {
-    console.log('Test 1: Render questions correctly');
+describe('Questions Page Tests', () => {
     
-    const testData = mockQuestionsData;
-    
-    // Mock DOM
-    const mockQuestionsList = document.createElement('div');
-    mockQuestionsList.id = 'questionsList';
-    document.body.appendChild(mockQuestionsList);
-    
-    // Test rendering logic
-    function renderQuestionsTest(questions) {
-        mockQuestionsList.innerHTML = '';
-        questions.forEach((question, index) => {
-            const div = document.createElement('div');
-            div.className = 'question-item';
-            div.innerHTML = `
-                <div class="question-item__header">
-                    <div class="question-item__question">${question.question}</div>
-                    <button class="question-item__toggle">+</button>
-                </div>
-                <div class="question-item__answer">${question.answer}</div>
-            `;
-            mockQuestionsList.appendChild(div);
-        });
-    }
-    
-    // Execute
-    renderQuestionsTest(testData);
-    
-    // Assertions
-    const renderedQuestions = mockQuestionsList.querySelectorAll('.question-item');
-    const questionCount = renderedQuestions.length;
-    
-    if (questionCount === testData.length) {
-        console.log('✅ PASS: Correct number of questions rendered');
-    } else {
-        console.log('❌ FAIL: Expected ' + testData.length + ' questions, got ' + questionCount);
-    }
-    
-    // Check if question content is rendered correctly
-    const firstQuestion = renderedQuestions[0].querySelector('.question-item__question').textContent;
-    if (firstQuestion === testData[0].question) {
-        console.log('✅ PASS: Question content rendered correctly');
-    } else {
-        console.log('❌ FAIL: Question content mismatch');
-    }
-    
-    document.body.removeChild(mockQuestionsList);
-}
-
-/**
- * Test 2: Show error state when data fetch fails
- * Tests that error state is displayed when fetch fails
- */
-function testErrorState() {
-    console.log('\nTest 2: Show error state when data fetch fails');
-    
-    // Mock DOM states
-    const mockErrorState = document.createElement('div');
-    mockErrorState.id = 'errorState';
-    mockErrorState.style.display = 'none';
-    document.body.appendChild(mockErrorState);
-    
-    // Simulate error state
-    function showErrorState() {
-        mockErrorState.style.display = 'block';
-        mockErrorState.innerHTML = `
-            <div class="error-state__icon">⚠️</div>
-            <h3 class="error-state__title">Đã xảy ra lỗi!</h3>
-            <p class="error-state__message">Không thể tải dữ liệu.</p>
-        `;
-    }
-    
-    // Execute
-    showErrorState();
-    
-    // Assertions
-    if (mockErrorState.style.display === 'block') {
-        console.log('✅ PASS: Error state is displayed');
-    } else {
-        console.log('❌ FAIL: Error state not displayed');
-    }
-    
-    const errorIcon = mockErrorState.querySelector('.error-state__icon');
-    const errorTitle = mockErrorState.querySelector('.error-state__title').textContent;
-    
-    if (errorIcon && errorTitle.includes('Đã xảy ra lỗi')) {
-        console.log('✅ PASS: Error state content is correct');
-    } else {
-        console.log('❌ FAIL: Error state content is incorrect');
-    }
-    
-    document.body.removeChild(mockErrorState);
-}
-
-/**
- * Test 3: Show empty state when no data
- * Tests that empty state is displayed when data array is empty
- */
-function testEmptyState() {
-    console.log('\nTest 3: Show empty state when no data');
-    
-    // Mock DOM
-    const mockEmptyState = document.createElement('div');
-    mockEmptyState.id = 'emptyState';
-    mockEmptyState.style.display = 'none';
-    document.body.appendChild(mockEmptyState);
-    
-    // Simulate empty state
-    function showEmptyState() {
-        mockEmptyState.style.display = 'block';
-        mockEmptyState.innerHTML = `
-            <div class="empty-state__icon">📭</div>
-            <p class="empty-state__text">Không có câu hỏi nào</p>
-        `;
-    }
-    
-    // Test with empty array
-    const emptyData = [];
-    
-    if (emptyData.length === 0) {
-        showEmptyState();
+    /**
+     * Test 1: Render questions correctly
+     * Tests that questions are rendered with proper HTML structure
+     */
+    test('should render questions correctly', () => {
+        const testData = mockQuestionsData;
+        
+        // Create mock DOM element
+        const mockQuestionsList = {
+            innerHTML: '',
+            appendChild: function() {}
+        };
+        
+        function renderQuestionsTest(questions) {
+            let html = '';
+            questions.forEach(question => {
+                html += `
+                    <div class="question-item">
+                        <div class="question-item__header">
+                            <div class="question-item__question">${question.question}</div>
+                        </div>
+                        <div class="question-item__answer">${question.answer}</div>
+                    </div>
+                `;
+            });
+            mockQuestionsList.innerHTML = html;
+        }
+        
+        // Execute
+        renderQuestionsTest(testData);
         
         // Assertions
-        if (mockEmptyState.style.display === 'block') {
-            console.log('✅ PASS: Empty state is displayed');
-        } else {
-            console.log('❌ FAIL: Empty state not displayed');
+        expect(testData.length).toBe(2);
+        expect(mockQuestionsList.innerHTML).toContain('MockTest là gì?');
+        expect(mockQuestionsList.innerHTML).toContain('question-item');
+        expect(mockQuestionsList.innerHTML).toContain('Có 6 môn học');
+    });
+
+    /**
+     * Test 2: Show error state when data fetch fails
+     * Tests that error state is displayed when fetch fails
+     */
+    test('should show error state when data fetch fails', () => {
+        const mockErrorState = {
+            style: { display: 'none' },
+            innerHTML: ''
+        };
+        
+        function showErrorState() {
+            mockErrorState.style.display = 'block';
+            mockErrorState.innerHTML = `
+                <div class="error-state__icon">⚠️</div>
+                <h3 class="error-state__title">Đã xảy ra lỗi!</h3>
+                <p class="error-state__message">Không thể tải dữ liệu.</p>
+            `;
         }
         
-        const emptyText = mockEmptyState.querySelector('.empty-state__text').textContent;
-        if (emptyText === 'Không có câu hỏi nào') {
-            console.log('✅ PASS: Empty state message is correct');
-        } else {
-            console.log('❌ FAIL: Empty state message is incorrect');
+        // Execute
+        showErrorState();
+        
+        // Assertions
+        expect(mockErrorState.style.display).toBe('block');
+        expect(mockErrorState.innerHTML).toContain('Đã xảy ra lỗi');
+        expect(mockErrorState.innerHTML).toContain('⚠️');
+    });
+
+    /**
+     * Test 3: Show empty state when no data
+     * Tests that empty state is displayed when data array is empty
+     */
+    test('should show empty state when no data', () => {
+        const mockEmptyState = {
+            style: { display: 'none' },
+            innerHTML: ''
+        };
+        
+        function showEmptyState() {
+            mockEmptyState.style.display = 'block';
+            mockEmptyState.innerHTML = `
+                <div class="empty-state__icon">📭</div>
+                <p class="empty-state__text">Không có câu hỏi nào</p>
+            `;
         }
-    }
-    
-    document.body.removeChild(mockEmptyState);
-}
-
-/**
- * Test 4: Show loading state during fetch
- * Tests that loading state is displayed while fetching data
- */
-function testLoadingState() {
-    console.log('\nTest 4: Show loading state during fetch');
-    
-    const mockLoadingState = document.createElement('div');
-    mockLoadingState.id = 'loadingState';
-    mockLoadingState.style.display = 'none';
-    document.body.appendChild(mockLoadingState);
-    
-    function showLoadingState() {
-        mockLoadingState.style.display = 'block';
-        mockLoadingState.innerHTML = `
-            <div class="loading-state__spinner"></div>
-            <p class="loading-state__text">Đang tải...</p>
-        `;
-    }
-    
-    // Execute
-    showLoadingState();
-    
-    // Assertions
-    if (mockLoadingState.style.display === 'block') {
-        console.log('✅ PASS: Loading state is displayed');
-    } else {
-        console.log('❌ FAIL: Loading state not displayed');
-    }
-    
-    const loadingText = mockLoadingState.querySelector('.loading-state__text').textContent;
-    if (loadingText === 'Đang tải...') {
-        console.log('✅ PASS: Loading state message is correct');
-    } else {
-        console.log('❌ FAIL: Loading state message is incorrect');
-    }
-    
-    document.body.removeChild(mockLoadingState);
-}
-
-/**
- * Test 5: Toggle answer visibility
- * Tests that clicking toggle button shows/hides answer
- */
-function testToggleAnswer() {
-    console.log('\nTest 5: Toggle answer visibility');
-    
-    const mockQuestionItem = document.createElement('div');
-    mockQuestionItem.className = 'question-item';
-    mockQuestionItem.innerHTML = `
-        <div class="question-item__header">
-            <div class="question-item__question">Test Question?</div>
-            <button class="question-item__toggle">+</button>
-        </div>
-        <div class="question-item__answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s;">
-            Test Answer
-        </div>
-    `;
-    document.body.appendChild(mockQuestionItem);
-    
-    const answerElement = mockQuestionItem.querySelector('.question-item__answer');
-    const toggleButton = mockQuestionItem.querySelector('.question-item__toggle');
-    
-    // Initial state: answer is hidden (max-height: 0)
-    const initialHeight = answerElement.style.maxHeight;
-    if (initialHeight === '0px' || initialHeight === '') {
-        console.log('✅ PASS: Answer is initially hidden');
-    } else {
-        console.log('❌ FAIL: Answer should be initially hidden');
-    }
-    
-    // Simulate toggle click
-    function toggleAnswer() {
-        if (answerElement.style.maxHeight === '0px' || answerElement.style.maxHeight === '') {
-            answerElement.style.maxHeight = '500px';
-            answerElement.classList.add('show');
-            toggleButton.textContent = '−';
-        } else {
-            answerElement.style.maxHeight = '0px';
-            answerElement.classList.remove('show');
-            toggleButton.textContent = '+';
+        
+        // Test with empty array
+        const emptyData = [];
+        
+        if (emptyData.length === 0) {
+            showEmptyState();
+            
+            // Assertions
+            expect(mockEmptyState.style.display).toBe('block');
+            expect(mockEmptyState.innerHTML).toContain('Không có câu hỏi nào');
+            expect(mockEmptyState.innerHTML).toContain('📭');
         }
-    }
-    
-    // Toggle on
-    toggleAnswer();
-    if (answerElement.style.maxHeight === '500px') {
-        console.log('✅ PASS: Answer is shown when toggled');
-    } else {
-        console.log('❌ FAIL: Answer should be shown');
-    }
-    
-    if (toggleButton.textContent === '−') {
-        console.log('✅ PASS: Button text changed to minus');
-    } else {
-        console.log('❌ FAIL: Button text should be minus');
-    }
-    
-    // Toggle off
-    toggleAnswer();
-    if (answerElement.style.maxHeight === '0px') {
-        console.log('✅ PASS: Answer is hidden when toggled again');
-    } else {
-        console.log('❌ FAIL: Answer should be hidden');
-    }
-    
-    if (toggleButton.textContent === '+') {
-        console.log('✅ PASS: Button text changed back to plus');
-    } else {
-        console.log('❌ FAIL: Button text should be plus');
-    }
-    
-    document.body.removeChild(mockQuestionItem);
-}
+        
+        expect(emptyData.length).toBe(0);
+    });
 
-// Run all tests
-console.log('=== Running Unit Tests for Questions Page ===\n');
-testRenderQuestions();
-testErrorState();
-testEmptyState();
-testLoadingState();
-testToggleAnswer();
-console.log('\n=== All tests completed ===');
+    /**
+     * Test 4: Show loading state during fetch
+     * Tests that loading state is displayed while fetching data
+     */
+    test('should show loading state during fetch', () => {
+        const mockLoadingState = {
+            style: { display: 'none' },
+            innerHTML: ''
+        };
+        
+        function showLoadingState() {
+            mockLoadingState.style.display = 'block';
+            mockLoadingState.innerHTML = `
+                <div class="loading-state__spinner"></div>
+                <p class="loading-state__text">Đang tải...</p>
+            `;
+        }
+        
+        // Execute
+        showLoadingState();
+        
+        // Assertions
+        expect(mockLoadingState.style.display).toBe('block');
+        expect(mockLoadingState.innerHTML).toContain('Đang tải...');
+        expect(mockLoadingState.innerHTML).toContain('spinner');
+    });
 
+    /**
+     * Test 5: Toggle answer visibility
+     * Tests that clicking toggle button shows/hides answer
+     */
+    test('should toggle answer visibility', () => {
+        let isVisible = false;
+        const mockToggle = {
+            style: { maxHeight: '0px' },
+            classList: { add: jest.fn(), remove: jest.fn() },
+            textContent: '+'
+        };
+        
+        function toggleAnswer() {
+            if (!isVisible) {
+                mockToggle.style.maxHeight = '500px';
+                mockToggle.classList.add('show');
+                mockToggle.textContent = '−';
+                isVisible = true;
+            } else {
+                mockToggle.style.maxHeight = '0px';
+                mockToggle.classList.remove('show');
+                mockToggle.textContent = '+';
+                isVisible = false;
+            }
+        }
+        
+        // Toggle on
+        toggleAnswer();
+        expect(mockToggle.style.maxHeight).toBe('500px');
+        expect(mockToggle.textContent).toBe('−');
+        expect(isVisible).toBe(true);
+        
+        // Toggle off
+        toggleAnswer();
+        expect(mockToggle.style.maxHeight).toBe('0px');
+        expect(mockToggle.textContent).toBe('+');
+        expect(isVisible).toBe(false);
+    });
+
+    /**
+     * Test 6: Questions.json file exists and has valid data
+     */
+    test('questions.json file should exist and contain data', () => {
+        const questionsPath = path.join(__dirname, 'questions.json');
+        const fileExists = fs.existsSync(questionsPath);
+        
+        expect(fileExists).toBe(true);
+        
+        if (fileExists) {
+            const fileContent = fs.readFileSync(questionsPath, 'utf8');
+            const questionsData = JSON.parse(fileContent);
+            
+            expect(Array.isArray(questionsData)).toBe(true);
+            expect(questionsData.length).toBeGreaterThan(0);
+            
+            // Check structure
+            if (questionsData.length > 0) {
+                const firstQuestion = questionsData[0];
+                expect(firstQuestion).toHaveProperty('id');
+                expect(firstQuestion).toHaveProperty('question');
+                expect(firstQuestion).toHaveProperty('answer');
+            }
+        }
+    });
+
+    /**
+     * Test 7: Data structure validation
+     */
+    test('questions data should have correct structure', () => {
+        const sampleQuestion = mockQuestionsData[0];
+        
+        expect(sampleQuestion).toHaveProperty('id');
+        expect(sampleQuestion).toHaveProperty('question');
+        expect(sampleQuestion).toHaveProperty('answer');
+        expect(typeof sampleQuestion.id).toBe('number');
+        expect(typeof sampleQuestion.question).toBe('string');
+        expect(typeof sampleQuestion.answer).toBe('string');
+        expect(sampleQuestion.question.length).toBeGreaterThan(0);
+        expect(sampleQuestion.answer.length).toBeGreaterThan(0);
+    });
+});
