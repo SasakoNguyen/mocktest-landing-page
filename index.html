@@ -17,6 +17,7 @@
                     <li class="header__nav-item"><a href="#benefits" class="header__nav-link">Tính Năng</a></li>
                     <li class="header__nav-item"><a href="#how-to-use" class="header__nav-link">Cách Sử Dụng</a></li>
                     <li class="header__nav-item"><a href="#contact" class="header__nav-link">Liên Hệ</a></li>
+                    <li class="header__nav-item"><a href="#" class="header__nav-link header__nav-link--login" onclick="openLoginModal()">Đăng Nhập</a></li>
                 </ul>
             </nav>
         </div>
@@ -27,7 +28,6 @@
             <div class="hero__container">
                 <h2 class="hero__title">Nắm Vững Kỳ Thi Với MockTest</h2>
                 <p class="hero__description">MockTest là nền tảng trực tuyến cung cấp các bài kiểm tra mô phỏng để giúp bạn chuẩn bị cho kỳ thi thật. Trải nghiệm câu hỏi có thời gian, định dạng trắc nghiệm và phản hồi ngay lập tức như thật.</p>
-                <button class="button button--cta" onclick="scrollToSection('benefits')">Bắt Đầu</button>
                 <img class="hero__image" src="https://cdn.dribbble.com/userupload/42229373/file/original-ed7a0d4882c972b919978cfc8f3ac778.png?format=webp&resize=400x300&vertical=center" alt="Ảnh chụp màn hình giao diện bài kiểm tra MockTest hiển thị một câu hỏi mẫu và bộ đếm thời gian">
             </div>
         </section>
@@ -89,12 +89,58 @@
         </div>
     </footer>
 
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal__content">
+            <span class="modal__close" onclick="closeLoginModal()">&times;</span>
+            <h2 class="modal__title">Đăng Nhập</h2>
+            <form id="loginForm" class="modal__form" onsubmit="handleLogin(event)">
+                <div class="modal__form-group">
+                    <label for="username" class="modal__label">Tên đăng nhập:</label>
+                    <input type="text" id="username" name="username" class="modal__input" required>
+                </div>
+                <div class="modal__form-group">
+                    <label for="password" class="modal__label">Mật khẩu:</label>
+                    <input type="password" id="password" name="password" class="modal__input" required>
+                </div>
+                <button type="submit" class="modal__button">Đăng Nhập</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         // Simple scroll to section
         function scrollToSection(sectionId) {
             const section = document.getElementById(sectionId);
             if (section) {
                 section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Login Modal Functions
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('loginForm').reset();
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Redirect to dashboard page with username
+            window.location.href = `dashboard.html?username=${encodeURIComponent(username)}`;
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target == modal) {
+                closeLoginModal();
             }
         }
     </script>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MockTest - Bảng Điều Khiển</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <header class="dashboard-header">
+        <div class="dashboard-header__container">
+            <div class="dashboard-header__left">
+                <button class="dashboard-header__back" onclick="goHome()">← Quay lại</button>
+                <h1 class="dashboard-header__logo">MockTest</h1>
+                <a href="questions.html" class="dashboard-header__link">❓ FAQs</a>
+            </div>
+            <div class="dashboard-header__user">
+                <span class="dashboard-header__username" id="displayUsername">Người dùng</span>
+                <button class="dashboard-header__logout" onclick="logout()">Đăng xuất</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="dashboard-main__container">
+            <!-- Welcome Section -->
+            <section class="dashboard-welcome">
+                <h2 class="dashboard-welcome__title">Chào mừng trở lại, <span id="welcomeUsername">người dùng</span>!</h2>
+                <p class="dashboard-welcome__description">Hãy chọn một bài kiểm tra để bắt đầu thực hành.</p>
+            </section>
+
+            <!-- Statistics Section -->
+            <section class="dashboard-statistics">
+                <div class="dashboard-statistics__card">
+                    <div class="dashboard-statistics__icon">📊</div>
+                    <div class="dashboard-statistics__info">
+                        <h3 class="dashboard-statistics__number" id="completedTests">0</h3>
+                        <p class="dashboard-statistics__label">Bài kiểm tra đã hoàn thành</p>
+                    </div>
+                </div>
+                <div class="dashboard-statistics__card">
+                    <div class="dashboard-statistics__icon">⭐</div>
+                    <div class="dashboard-statistics__info">
+                        <h3 class="dashboard-statistics__number" id="averageScore">0%</h3>
+                        <p class="dashboard-statistics__label">Điểm trung bình</p>
+                    </div>
+                </div>
+                <div class="dashboard-statistics__card">
+                    <div class="dashboard-statistics__icon">🎯</div>
+                    <div class="dashboard-statistics__info">
+                        <h3 class="dashboard-statistics__number" id="rank">#--</h3>
+                        <p class="dashboard-statistics__label">Xếp hạng</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Available Tests Section -->
+            <section class="dashboard-tests">
+                <h2 class="dashboard-tests__title">Các Bài Kiểm Tra Có Sẵn</h2>
+                <div class="dashboard-tests__grid">
+                    <div class="dashboard-test-card">
+                        <div class="dashboard-test-card__icon">📚</div>
+                        <h3 class="dashboard-test-card__title">Toán Học</h3>
+                        <p class="dashboard-test-card__description">50 câu hỏi - 60 phút</p>
+                        <button class="dashboard-test-card__button" onclick="startTest('toan-hoc')">Bắt Đầu</button>
+                    </div>
+                    <div class="dashboard-test-card">
+                        <div class="dashboard-test-card__icon">🔬</div>
+                        <h3 class="dashboard-test-card__title">Vật Lý</h3>
+                        <p class="dashboard-test-card__description">40 câu hỏi - 50 phút</p>
+                        <button class="dashboard-test-card__button" onclick="startTest('vat-ly')">Bắt Đầu</button>
+                    </div>
+                    <div class="dashboard-test-card">
+                        <div class="dashboard-test-card__icon">⚗️</div>
+                        <h3 class="dashboard-test-card__title">Hóa Học</h3>
+                        <p class="dashboard-test-card__description">40 câu hỏi - 50 phút</p>
+                        <button class="dashboard-test-card__button" onclick="startTest('hoa-hoc')">Bắt Đầu</button>
+                    </div>
+                    <div class="dashboard-test-card">
+                        <div class="dashboard-test-card__icon">🧬</div>
+                        <h3 class="dashboard-test-card__title">Sinh Học</h3>
+                        <p class="dashboard-test-card__description">45 câu hỏi - 55 phút</p>
+                        <button class="dashboard-test-card__button" onclick="startTest('sinh-hoc')">Bắt Đầu</button>
+                    </div>
+                    <div class="dashboard-test-card">
+                        <div class="dashboard-test-card__icon">🌍</div>
+                        <h3 class="dashboard-test-card__title">Địa Lý</h3>
+                        <p class="dashboard-test-card__description">35 câu hỏi - 45 phút</p>
+                        <button class="dashboard-test-card__button" onclick="startTest('dia-ly')">Bắt Đầu</button>
+                    </div>
+                    <div class="dashboard-test-card">
+                        <div class="dashboard-test-card__icon">💬</div>
+                        <h3 class="dashboard-test-card__title">Tiếng Anh</h3>
+                        <p class="dashboard-test-card__description">45 câu hỏi - 55 phút</p>
+                        <button class="dashboard-test-card__button" onclick="startTest('tieng-anh')">Bắt Đầu</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Activity Section -->
+            <section class="dashboard-activity">
+                <h2 class="dashboard-activity__title">Hoạt Động Gần Đây</h2>
+                <div class="dashboard-activity__list">
+                    <div class="dashboard-activity__item">
+                        <div class="dashboard-activity__icon">✓</div>
+                        <div class="dashboard-activity__info">
+                            <h4 class="dashboard-activity__test">Toán Học - Bài 1</h4>
+                            <p class="dashboard-activity__time">Chưa có hoạt động nào</p>
+                        </div>
+                        <div class="dashboard-activity__score">--</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="dashboard-footer">
+        <div class="dashboard-footer__container">
+            <p class="dashboard-footer__text">&copy; 2025 MockTest. Mọi quyền được bảo lưu.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Get username from URL parameter
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const username = urlParams.get('username');
+            
+            if (username) {
+                document.getElementById('displayUsername').textContent = username;
+                document.getElementById('welcomeUsername').textContent = username;
+            }
+        }
+
+        function startTest(testName) {
+            alert(`Bắt đầu bài kiểm tra: ${testName}`);
+            // Here you would navigate to the actual test page
+        }
+
+        function goHome() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const username = urlParams.get('username');
+            if (username) {
+                window.location.href = `index.html?username=${encodeURIComponent(username)}`;
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        function logout() {
+            if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
+

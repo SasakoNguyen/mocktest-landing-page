@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MockTest - Unit Tests</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        #testResults {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .run-button {
+            padding: 0.75rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        .run-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .info {
+            background-color: #e3f2fd;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            color: #1565c0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 MockTest - Unit Tests</h1>
+        <div class="info">
+            <strong>Hướng dẫn:</strong> Click nút "Chạy Tests" bên dưới để chạy tất cả các unit tests cho trang Questions.
+        </div>
+        <button class="run-button" onclick="runTests()">Chạy Tests</button>
+        <button class="run-button" onclick="clearResults()" style="background: #f44336; margin-left: 1rem;">Xóa Kết Quả</button>
+        <div id="testResults"></div>
+    </div>
+
+    <script src="questions.test.js"></script>
+    <script>
+        function clearResults() {
+            document.getElementById('testResults').textContent = '';
+        }
+        
+        function runTests() {
+            // Clear previous results
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.textContent = 'Đang chạy tests...\n\n';
+            
+            // Redirect console.log to results div
+            const originalLog = console.log;
+            let logOutput = '';
+            
+            console.log = function(...args) {
+                originalLog.apply(console, args);
+                logOutput += args.join(' ') + '\n';
+                resultsDiv.textContent = logOutput;
+                resultsDiv.scrollTop = resultsDiv.scrollHeight;
+            };
+            
+            // Run tests
+            setTimeout(() => {
+                // Tests will run from questions.test.js
+                console.log('Đã hoàn thành chạy tests!');
+                console.log = originalLog;
+            }, 100);
+        }
+    </script>
+</body>
+</html>
+

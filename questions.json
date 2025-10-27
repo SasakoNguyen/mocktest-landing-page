@@ -1,0 +1,53 @@
+[
+  {
+    "id": 1,
+    "question": "MockTest là gì?",
+    "answer": "MockTest là nền tảng trực tuyến cung cấp các bài kiểm tra mô phỏng giúp bạn chuẩn bị cho kỳ thi thật. Bạn có thể thực hành với định dạng trắc nghiệm, có thời gian và nhận phản hồi ngay lập tức."
+  },
+  {
+    "id": 2,
+    "question": "Tôi có cần đăng ký tài khoản để sử dụng MockTest không?",
+    "answer": "Có, bạn cần đăng ký một tài khoản miễn phí để sử dụng MockTest. Tài khoản giúp bạn theo dõi tiến độ, lịch sử bài kiểm tra và điểm số của mình."
+  },
+  {
+    "id": 3,
+    "question": "Có bao nhiêu loại bài kiểm tra có sẵn?",
+    "answer": "MockTest cung cấp nhiều môn học khác nhau bao gồm: Toán Học (50 câu - 60 phút), Vật Lý (40 câu - 50 phút), Hóa Học (40 câu - 50 phút), Sinh Học (45 câu - 55 phút), Địa Lý (35 câu - 45 phút), và Tiếng Anh (45 câu - 55 phút)."
+  },
+  {
+    "id": 4,
+    "question": "Làm thế nào để bắt đầu một bài kiểm tra?",
+    "answer": "Sau khi đăng nhập, bạn sẽ thấy danh sách các bài kiểm tra có sẵn trên dashboard. Chọn môn học bạn muốn thực hành và nhấn nút 'Bắt Đầu' để bắt đầu bài kiểm tra."
+  },
+  {
+    "id": 5,
+    "question": "Có lợi ích gì khi sử dụng MockTest?",
+    "answer": "MockTest giúp bạn cải thiện khả năng ghi nhớ thông qua thực hành lặp lại, tăng sự tự tin bằng cách mô phỏng môi trường thi thật, cung cấp theo dõi tiến độ chi tiết, và bạn có thể truy cập mọi lúc, mọi nơi trên mọi thiết bị."
+  },
+  {
+    "id": 6,
+    "question": "Tôi có thể xem lại kết quả các bài kiểm tra đã làm không?",
+    "answer": "Có, bạn có thể xem lại kết quả, xem lời giải thích chi tiết và theo dõi sự tiến bộ của mình trong phần 'Hoạt Động Gần Đây' trên dashboard."
+  },
+  {
+    "id": 7,
+    "question": "Bài kiểm tra có giới hạn thời gian không?",
+    "answer": "Có, mỗi bài kiểm tra đều có thời gian quy định. Ví dụ: Toán Học - 60 phút, Vật Lý - 50 phút, Hóa Học - 50 phút, Sinh Học - 55 phút, Địa Lý - 45 phút, và Tiếng Anh - 55 phút."
+  },
+  {
+    "id": 8,
+    "question": "MockTest có tính phí không?",
+    "answer": "MockTest cung cấp tài khoản miễn phí với đầy đủ tính năng. Bạn có thể đăng ký và sử dụng mà không cần trả phí."
+  },
+  {
+    "id": 9,
+    "question": "Tôi có thể sử dụng MockTest trên thiết bị di động không?",
+    "answer": "Có, MockTest được thiết kế responsive và có thể truy cập trên mọi thiết bị bao gồm máy tính, tablet và điện thoại di động. Bạn có thể học mọi lúc, mọi nơi."
+  },
+  {
+    "id": 10,
+    "question": "Làm sao tôi có thể liên hệ với đội ngũ hỗ trợ?",
+    "answer": "Bạn có thể liên hệ với chúng tôi qua email: support@mocktest.com hoặc điện thoại: +84 123 456 789. Giờ làm việc: Thứ 2 - Thứ 6: 8:00 - 17:00."
+  }
+]
+
