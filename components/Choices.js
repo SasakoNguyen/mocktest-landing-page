@@ -13,10 +13,9 @@
  * @returns {string} HTML string for the choices
  */
 function Choices(props) {
-    const { choices, selectedAnswer, onAnswerSelect, questionIndex } = props;
+    const { choices, selectedAnswer } = props;
     
     const choicesHTML = choices.map((choice, index) => {
-        const choiceId = choice.letter || `choice-${index}`;
         const isSelected = selectedAnswer === choice.letter;
         
         return `

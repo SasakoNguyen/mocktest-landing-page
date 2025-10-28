@@ -15,7 +15,7 @@
  * @returns {string} HTML string for the navbar
  */
 function NavBar(props) {
-    const { currentQuestion, totalQuestions, onPrevQuestion, onNextQuestion, isLastQuestion, onSubmit } = props;
+    const { currentQuestion, totalQuestions, isLastQuestion } = props;
     
     const canGoBack = currentQuestion > 1;
     const canGoNext = currentQuestion < totalQuestions;
