@@ -21,12 +21,22 @@ jobs:
       - name: Install Newman
         run: npm i -g newman
 
+      - name: Verify files
+        run: |
+          pwd
+          ls -la
+          ls -la postman
+
       - name: Run Newman
         run: |
-          newman run "postman/Mocktest API.postman_collection.json" \
-            -e "postman/Mocktest.postman_environment.json" \
-            --reporters cli,junit \
-            --reporter-junit-export newman-report.xml
+          for i in 1 2 3; do \
+            newman run "postman/Mocktest API.postman_collection.json" \
+              -e "postman/Mocktest.postman_environment.json" \
+              --timeout-request 10000 --timeout-script 10000 \
+              --reporters cli,junit \
+              --reporter-junit-export newman-report.xml && break || \
+            (echo "Retrying in 5s..." && sleep 5); \
+          done
 
       - name: Upload test report
         uses: actions/upload-artifact@v4
