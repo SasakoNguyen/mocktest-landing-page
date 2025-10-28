@@ -23,8 +23,8 @@ jobs:
 
       - name: Run Newman
         run: |
-          newman run postman/Mocktest\ API.postman_collection.json \
-            -e postman/Mocktest.postman_environment.json \
+          newman run "postman/Mocktest API.postman_collection.json" \
+            -e "postman/Mocktest.postman_environment.json" \
             --reporters cli,junit \
             --reporter-junit-export newman-report.xml
 
