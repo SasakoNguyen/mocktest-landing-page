@@ -144,3 +144,22 @@ python -m http.server 8000
 
 © 2025 MockTest. All rights reserved.
 
+
+## 🔌 API Testing: Postman + Newman + OpenAPI
+
+Repo đã kèm sẵn bộ kiểm thử API tự động dùng Postman/Newman (dùng `jsonplaceholder.typicode.com` làm API demo công khai).
+
+- Collection: `postman/Mocktest API.postman_collection.json`
+- Environment: `postman/Mocktest.postman_environment.json`
+- OpenAPI: `openapi.yaml`
+
+Chạy local:
+
+```bash
+npm i -g newman
+newman run "postman/Mocktest API.postman_collection.json" -e postman/Mocktest.postman_environment.json
+```
+
+CI: Workflow `.github/workflows/newman.yml` sẽ chạy tests trên mỗi push/PR. Kết quả được upload dưới dạng artifact `newman-report.xml`.
+
+Public docs: Import `openapi.yaml` vào Swagger UI hoặc Postman để xuất link tài liệu công khai.

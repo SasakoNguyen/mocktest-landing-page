@@ -1,0 +1,122 @@
+{
+  "info": {
+    "name": "Mocktest API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "8e1f3b2e-8f2e-4fd8-9a41-111111111111"
+  },
+  "item": [
+    {
+      "name": "GET /posts",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/posts"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('JSON array', function () { pm.expect(pm.response.json()).to.be.an('array'); });",
+              "pm.test('>= 10 items', function () { pm.expect(pm.response.json().length).to.be.at.least(10); });",
+              "pm.test('response time < 1500ms', function () { pm.expect(pm.response.responseTime).to.be.below(1500); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET /posts/1",
+      "request": { "method": "GET", "url": "{{baseUrl}}/posts/1" },
+      "event": [
+        {
+          "listen": "test",
+          "script": { "type": "text/javascript", "exec": [
+            "const body = pm.response.json();",
+            "pm.test('status 200', () => pm.response.to.have.status(200));",
+            "pm.test('has id = 1', () => pm.expect(body.id).eql(1));",
+            "pm.test('has userId', () => pm.expect(body).to.have.property('userId'));"
+          ]}
+        }
+      ]
+    },
+    {
+      "name": "POST /posts",
+      "request": {
+        "method": "POST",
+        "header": [{"key":"Content-Type","value":"application/json"}],
+        "body": {"mode":"raw","raw":"{\\n  \\\"title\\\": \\\"foo\\\",\\n  \\\"body\\\": \\\"bar\\\",\\n  \\\"userId\\\": 1\\n}"},
+        "url": "{{baseUrl}}/posts"
+      },
+      "event": [
+        {"listen":"test","script":{"type":"text/javascript","exec":[
+          "pm.test('status 201', () => pm.response.to.have.status(201));",
+          "const body = pm.response.json();",
+          "pm.test('has id', () => pm.expect(body).to.have.property('id'));"
+        ]}}
+      ]
+    },
+    {
+      "name": "PUT /posts/1",
+      "request": {
+        "method": "PUT",
+        "header": [{"key":"Content-Type","value":"application/json"}],
+        "body": {"mode":"raw","raw":"{\\n  \\\"id\\\":1, \\\"title\\\": \\\"foo\\\",\\n  \\\"body\\\": \\\"baz\\\",\\n  \\\"userId\\\": 1\\n}"},
+        "url": "{{baseUrl}}/posts/1"
+      },
+      "event": [
+        {"listen":"test","script":{"type":"text/javascript","exec":[
+          "pm.test('status 200', () => pm.response.to.have.status(200));",
+          "pm.test('title updated', () => pm.expect(pm.response.json().title).eql('foo'));"
+        ]}}
+      ]
+    },
+    {
+      "name": "PATCH /posts/1",
+      "request": {
+        "method": "PATCH",
+        "header": [{"key":"Content-Type","value":"application/json"}],
+        "body": {"mode":"raw","raw":"{\\n  \\\"title\\\": \\\"patched\\\"\\n}"},
+        "url": "{{baseUrl}}/posts/1"
+      },
+      "event": [
+        {"listen":"test","script":{"type":"text/javascript","exec":[
+          "pm.test('status 200', () => pm.response.to.have.status(200));",
+          "pm.test('title patched', () => pm.expect(pm.response.json().title).eql('patched'));"
+        ]}}
+      ]
+    },
+    {
+      "name": "DELETE /posts/1",
+      "request": { "method": "DELETE", "url": "{{baseUrl}}/posts/1" },
+      "event": [
+        {"listen":"test","script":{"type":"text/javascript","exec":[
+          "pm.test('status 200/204', function () { pm.expect([200,204]).to.include(pm.response.code); });"
+        ]}}
+      ]
+    },
+    {
+      "name": "GET /comments?postId=1",
+      "request": { "method": "GET", "url": "{{baseUrl}}/comments?postId=1" },
+      "event": [
+        {"listen":"test","script":{"type":"text/javascript","exec":[
+          "pm.test('status 200', () => pm.response.to.have.status(200));",
+          "pm.test('all comments belong to post 1', () => { pm.response.json().forEach(c => pm.expect(c.postId).eql(1)); });"
+        ]}}
+      ]
+    },
+    {
+      "name": "GET /users",
+      "request": { "method": "GET", "url": "{{baseUrl}}/users" },
+      "event": [
+        {"listen":"test","script":{"type":"text/javascript","exec":[
+          "pm.test('status 200', () => pm.response.to.have.status(200));",
+          "pm.test('non-empty array', () => pm.expect(pm.response.json().length).above(0));"
+        ]}}
+      ]
+    }
+  ]
+}
+
+

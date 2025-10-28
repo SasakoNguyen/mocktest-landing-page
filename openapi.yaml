@@ -1,0 +1,98 @@
+openapi: 3.0.3
+info:
+  title: Mocktest Public API (proxied JSONPlaceholder)
+  version: 1.0.0
+servers:
+  - url: https://jsonplaceholder.typicode.com
+paths:
+  /posts:
+    get:
+      summary: List posts
+      responses:
+        '200': { description: OK }
+    post:
+      summary: Create post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string }
+                body: { type: string }
+                userId: { type: integer }
+      responses:
+        '201': { description: Created }
+  /posts/{id}:
+    get:
+      summary: Get post by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: OK }
+    put:
+      summary: Replace post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/Post' }
+      responses:
+        '200': { description: OK }
+    patch:
+      summary: Update post fields
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        '200': { description: OK }
+    delete:
+      summary: Delete post
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer }
+      responses:
+        '200': { description: OK }
+  /comments:
+    get:
+      summary: List comments filtered by postId
+      parameters:
+        - in: query
+          name: postId
+          schema: { type: integer }
+      responses:
+        '200': { description: OK }
+  /users:
+    get:
+      summary: List users
+      responses:
+        '200': { description: OK }
+components:
+  schemas:
+    Post:
+      type: object
+      properties:
+        id: { type: integer }
+        userId: { type: integer }
+        title: { type: string }
+        body: { type: string }
+
+
