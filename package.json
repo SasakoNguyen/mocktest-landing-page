@@ -4,10 +4,14 @@
     "jest-environment-jsdom": "^30.2.0",
     "eslint": "^8.53.0"
   },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "moduleDirectories": ["node_modules", "src"]
+  },
   "scripts": {
-    "test": "jest",
-    "lint": "eslint .",
-    "build": "mkdir -p dist && cp -r index.html components pages scripts styles data dist/"
+    "test": "jest --passWithNoTests",
+    "lint": "eslint . --max-warnings 0",
+    "build": "powershell -Command \"New-Item -ItemType Directory -Force -Path dist; Copy-Item -Path index.html,components,pages,scripts,styles,data -Destination dist -Recurse -Force\""
   },
   "name": "mocktest-landing-page",
   "version": "1.0.0",
