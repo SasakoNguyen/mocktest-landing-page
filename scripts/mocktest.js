@@ -215,17 +215,13 @@ function renderApp() {
         
         const choices = Choices({
             choices: question.choices,
-            selectedAnswer: selectedAnswer,
-            questionIndex: currentIndex
+            selectedAnswer: selectedAnswer
         });
         
         const navBar = NavBar({
             currentQuestion: currentIndex + 1,
             totalQuestions: questionsData.length,
-            onPrevQuestion: handlePrevQuestion,
-            onNextQuestion: handleNextQuestion,
-            isLastQuestion: currentIndex === questionsData.length - 1,
-            onSubmit: handleSubmit
+            isLastQuestion: currentIndex === questionsData.length - 1
         });
         
         app.innerHTML = questionCard + choices + navBar;
