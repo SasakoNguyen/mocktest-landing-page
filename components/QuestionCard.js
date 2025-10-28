@@ -3,11 +3,7 @@
  * Displays the current question information
  */
 
-// React-like useState hook pattern
-function useState(initialValue) {
-    let state = initialValue;
-    return [state, (newValue) => { state = newValue; }];
-}
+// (removed) local useState helper was unused
 
 /**
  * QuestionCard Component

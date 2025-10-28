@@ -1,15 +1,10 @@
 {
   "devDependencies": {
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^30.2.0",
     "eslint": "^8.53.0"
   },
-  "jest": {
-    "testEnvironment": "jsdom",
-    "moduleDirectories": ["node_modules", "src"]
-  },
   "scripts": {
-    "test": "jest --passWithNoTests",
+    "test": "jest",
     "lint": "eslint . --max-warnings 0",
     "build": "powershell -Command \"New-Item -ItemType Directory -Force -Path dist; Copy-Item -Path index.html,components,pages,scripts,styles,data -Destination dist -Recurse -Force\""
   },
@@ -228,15 +223,9 @@
     "yargs-parser": "^21.1.1",
     "yocto-queue": "^0.1.0"
   },
-  "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch"
-  },
   "jest": {
     "testEnvironment": "node",
-    "testMatch": [
-      "**/*.test.js"
-    ],
+    "testMatch": ["**/*.test.js"],
     "verbose": true
   },
   "repository": {
