@@ -41,6 +41,8 @@ const questionsData = [
             {letter: "C", text: "5"},
             {letter: "D", text: "6"}
         ]
+        ,
+        answer: 'B'
     },
     {
         id: 2,
@@ -51,6 +53,8 @@ const questionsData = [
             {letter: "C", text: "8"},
             {letter: "D", text: "9"}
         ]
+        ,
+        answer: 'C'
     },
     {
         id: 3,
@@ -61,6 +65,8 @@ const questionsData = [
             {letter: "C", text: "x²"},
             {letter: "D", text: "2x²"}
         ]
+        ,
+        answer: 'B'
     }
 ];
 
@@ -106,12 +112,36 @@ function handleNextQuestion() {
 
 function handleSubmit() {
     const selected = getSelectedAnswers();
-    const selectedCount = Object.keys(selected).length;
-    
+    const total = questionsData.length;
+    const answeredCount = Object.keys(selected).length;
+
+    // Calculate score
+    let correctCount = 0;
+    const breakdown = questionsData.map((q, idx) => {
+        const user = selected[idx] || null;
+        const correct = q.answer || null;
+        const isCorrect = user && correct && user === correct;
+        if (isCorrect) correctCount += 1;
+        return {
+            id: q.id,
+            question: q.question,
+            userAnswer: user,
+            correctAnswer: correct,
+            isCorrect
+        };
+    });
+
     console.log('Submitting test with answers:', selected);
-    
-    alert(`Bài kiểm tra đã được nộp!\n\nBạn đã trả lời: ${selectedCount}/${questionsData.length} câu hỏi.\n\nKiểm tra console để xem chi tiết state.`);
-    
+    console.log('Score breakdown:', breakdown);
+
+    // Store results in state for rendering
+    window.__mocktest_results = {
+        total,
+        answeredCount,
+        correctCount,
+        breakdown
+    };
+
     setShowResults(true);
     renderApp();
 }
@@ -136,12 +166,28 @@ function renderApp() {
     const app = document.getElementById('app');
     
     if (getShowResults()) {
-        // Show results
-        const selected = getSelectedAnswers();
+        // Show scored results with breakdown
+        const results = window.__mocktest_results || { total: questionsData.length, answeredCount: 0, correctCount: 0, breakdown: [] };
+
+        const breakdownHTML = results.breakdown.map((b, i) => {
+            return `
+                <div style="padding:0.75rem; border-radius:8px; margin-bottom:0.5rem; background:${b.isCorrect ? '#e6ffed' : '#fff0f0'}; border:1px solid ${b.isCorrect ? '#b7eb8f' : '#f5c6cb'};">
+                    <div style="font-weight:700;">Q${i+1}: ${b.question}</div>
+                    <div>Đáp án của bạn: <strong>${b.userAnswer || 'Chưa chọn'}</strong> — Đáp án đúng: <strong>${b.correctAnswer || 'N/A'}</strong></div>
+                </div>
+            `;
+        }).join('');
+
         const resultsHTML = `
-            <div style="text-align: center; padding: 2rem;">
+            <div style="text-align: center; padding: 2rem; max-width:900px; margin:0 auto;">
                 <h2>🎉 Kết Quả Bài Kiểm Tra</h2>
-                <p>Số câu trả lời: ${Object.keys(selected).length} / ${questionsData.length}</p>
+                <p style="font-size:1.1rem;">Bạn trả lời <strong>${results.answeredCount}</strong> / <strong>${results.total}</strong> câu.</p>
+                <p style="font-size:1.2rem;">Số câu đúng: <strong>${results.correctCount}</strong> — Điểm: <strong>${Math.round((results.correctCount / results.total) * 100)}%</strong></p>
+
+                <div style="text-align:left; margin-top:1.5rem;">
+                    ${breakdownHTML}
+                </div>
+
                 <div style="margin-top: 2rem;">
                     <button 
                         style="padding: 1rem 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
@@ -153,6 +199,7 @@ function renderApp() {
                 </div>
             </div>
         `;
+
         app.innerHTML = resultsHTML;
     } else {
         const question = getCurrentQuestion();
